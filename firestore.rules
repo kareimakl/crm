@@ -1,0 +1,173 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function getUserRole() {
+      let userData = getUserData();
+      return get(/databases/$(database)/documents/roles/$(userData.role)).data;
+    }
+    
+    function hasPermission(section, requiredPermission) {
+      let role = getUserRole();
+      if (!role || !role.permissions) return false;
+      
+      let userPermission = role.permissions[section];
+      if (!userPermission) return false;
+      
+      let permissionLevels = {
+        "none": 0,
+        "view": 1,
+        "edit": 2,
+        "admin": 3
+      };
+      
+      return permissionLevels[userPermission] >= permissionLevels[requiredPermission];
+    }
+    
+    function isSuperAdmin() {
+      let userData = getUserData();
+      return userData.role == "super_admin";
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isSuperAdmin());
+      allow create: if isAuthenticated() && isSuperAdmin();
+      allow update: if isAuthenticated() && (request.auth.uid == userId || isSuperAdmin());
+      allow delete: if isAuthenticated() && isSuperAdmin();
+    }
+    
+    // Roles collection
+    match /roles/{roleName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isSuperAdmin();
+    }
+    
+    // Branches collection
+    match /branches/{branchId} {
+      allow read: if isAuthenticated() && hasPermission("الفروع", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الفروع", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الفروع", "admin");
+    }
+    
+    // Warehouses collection
+    match /warehouses/{warehouseId} {
+      allow read: if isAuthenticated() && hasPermission("المخازن", "view");
+      allow create, update: if isAuthenticated() && hasPermission("المخازن", "edit");
+      allow delete: if isAuthenticated() && hasPermission("المخازن", "admin");
+    }
+    
+    // Trips collection
+    match /trips/{tripId} {
+      allow read: if isAuthenticated() && hasPermission("الرحلات", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الرحلات", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الرحلات", "admin");
+    }
+    
+    // Employees collection
+    match /employees/{employeeId} {
+      allow read: if isAuthenticated() && hasPermission("الموظفين", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الموظفين", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الموظفين", "admin");
+    }
+    
+    // Pilgrims collection
+    match /pilgrims/{pilgrimId} {
+      allow read: if isAuthenticated() && hasPermission("الحجاج", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الحجاج", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الحجاج", "admin");
+    }
+    
+    // Supplies collection
+    match /supplies/{supplyId} {
+      allow read: if isAuthenticated() && hasPermission("التوريدات", "view");
+      allow create, update: if isAuthenticated() && hasPermission("التوريدات", "edit");
+      allow delete: if isAuthenticated() && hasPermission("التوريدات", "admin");
+    }
+    
+    // Tickets collection
+    match /tickets/{ticketId} {
+      allow read: if isAuthenticated() && hasPermission("التذاكر", "view");
+      allow create, update: if isAuthenticated() && hasPermission("التذاكر", "edit");
+      allow delete: if isAuthenticated() && hasPermission("التذاكر", "admin");
+    }
+    
+    // Invoices collection
+    match /invoices/{invoiceId} {
+      allow read: if isAuthenticated() && hasPermission("الفواتير", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الفواتير", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الفواتير", "admin");
+    }
+    
+    // Bus Drivers collection
+    match /busDrivers/{driverId} {
+      allow read: if isAuthenticated() && hasPermission("سائقين الحافلات", "view");
+      allow create, update: if isAuthenticated() && hasPermission("سائقين الحافلات", "edit");
+      allow delete: if isAuthenticated() && hasPermission("سائقين الحافلات", "admin");
+    }
+    
+    // Hotels collection
+    match /hotels/{hotelId} {
+      allow read: if isAuthenticated() && hasPermission("الفنادق", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الفنادق", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الفنادق", "admin");
+    }
+    
+    // Products collection
+    match /products/{productId} {
+      allow read: if isAuthenticated() && hasPermission("المنتجات", "view");
+      allow create, update: if isAuthenticated() && hasPermission("المنتجات", "edit");
+      allow delete: if isAuthenticated() && hasPermission("المنتجات", "admin");
+    }
+    
+    // Loyalty collection
+    match /loyalty/{loyaltyId} {
+      allow read: if isAuthenticated() && hasPermission("الولاء", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الولاء", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الولاء", "admin");
+    }
+    
+    // HR collection
+    match /hr/{hrId} {
+      allow read: if isAuthenticated() && hasPermission("الموارد البشرية", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الموارد البشرية", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الموارد البشرية", "admin");
+    }
+    
+    // Reports collection
+    match /reports/{reportId} {
+      allow read: if isAuthenticated() && hasPermission("التقارير", "view");
+      allow create, update: if isAuthenticated() && hasPermission("التقارير", "edit");
+      allow delete: if isAuthenticated() && hasPermission("التقارير", "admin");
+    }
+    
+    // Settings collection
+    match /settings/{settingId} {
+      allow read: if isAuthenticated() && hasPermission("الإعدادات", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الإعدادات", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الإعدادات", "admin");
+    }
+    
+    // Attendance collection
+    match /attendance/{attendanceId} {
+      allow read: if isAuthenticated() && hasPermission("الموظفين", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الموظفين", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الموظفين", "admin");
+    }
+    
+    // Salary sheets collection
+    match /salarySheets/{sheetId} {
+      allow read: if isAuthenticated() && hasPermission("الموظفين", "view");
+      allow create, update: if isAuthenticated() && hasPermission("الموظفين", "edit");
+      allow delete: if isAuthenticated() && hasPermission("الموظفين", "admin");
+    }
+  }
+} 
