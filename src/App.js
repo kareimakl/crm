@@ -1,33 +1,34 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './components/Layout';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/Layout";
 
 // Pages
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Pilgrims from './pages/Pilgrims';
-import Supplies from './pages/Supplies';
-import Tickets from './pages/Tickets';
-import Invoices from './pages/Invoices';
-import BusDrivers from './pages/BusDrivers';
-import Hotels from './pages/Hotels';
-import Products from './pages/Products';
-import Loyalty from './pages/Loyalty';
-import HR from './pages/HR';
-import Reports from './pages/Reports';
-import Settings from './pages/Settings';
-import Blocked from './pages/Blocked';
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Pilgrims from "./pages/Pilgrims";
+import Supplies from "./pages/Supplies";
+import Tickets from "./pages/Tickets";
+import SuppliesPrint from "./pages/suppliesPrint";
+import Invoices from "./pages/Invoices";
+import BusDrivers from "./pages/BusDrivers";
+import Hotels from "./pages/Hotels";
+import Products from "./pages/Products";
+import Loyalty from "./pages/Loyalty";
+import HR from "./pages/HR";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
+import Blocked from "./pages/Blocked";
 
 // New pages
-import Warehouses from './pages/Warehouses';
-import Trips from './pages/Trips';
-import Employees from './pages/Employees';
-import Users from './pages/Users';
+import Warehouses from "./pages/Warehouses";
+import Trips from "./pages/Trips";
+import Employees from "./pages/Employees";
+import Users from "./pages/Users";
 
 // Import constants
-import { SECTIONS } from './constants/permissions';
+import { SECTIONS } from "./constants/permissions";
 
 // Main App Component
 const AppContent = () => {
@@ -49,207 +50,261 @@ const AppContent = () => {
   }
 
   return (
-      <Routes>
+    <Routes>
       {/* Public Routes */}
-      <Route 
-        path="/login" 
-        element={currentUser ? <Navigate to="/dashboard" replace /> : <Login />} 
+      <Route
+        path="/login"
+        element={currentUser ? <Navigate to="/dashboard" replace /> : <Login />}
       />
-      
+
       {/* Protected Routes */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      
-      <Route 
-        path="/dashboard" 
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+      <Route
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <Layout>
               <Dashboard />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Warehouses Management */}
-      <Route 
-        path="/warehouses" 
+      <Route
+        path="/warehouses"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.WAREHOUSES} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.WAREHOUSES}
+            requiredPermission="view"
+          >
             <Warehouses />
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Trips Management */}
-      <Route 
-        path="/trips" 
+      <Route
+        path="/trips"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.TRIPS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.TRIPS}
+            requiredPermission="view"
+          >
             <Trips />
           </ProtectedRoute>
-        } 
+        }
+      />
+      {/* Supplies Print */}
+      <Route
+        path="/suppliesPrint"
+        element={
+          // <ProtectedRoute
+          //   requiredSection={SECTIONS.PRINT}
+          //   requiredPermission="view"
+          // >
+          <SuppliesPrint />
+          // </ProtectedRoute>
+        }
       />
 
       {/* Employees Management */}
-      <Route 
-        path="/employees" 
+      <Route
+        path="/employees"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.EMPLOYEES} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.EMPLOYEES}
+            requiredPermission="view"
+          >
             <Employees />
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Pilgrims Management */}
-      <Route 
-        path="/pilgrims" 
+      <Route
+        path="/pilgrims"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.PILGRIMS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.PILGRIMS}
+            requiredPermission="view"
+          >
             <Layout>
               <Pilgrims />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Supplies Management */}
-      <Route 
-        path="/supplies" 
+      <Route
+        path="/supplies"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.SUPPLIES} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.SUPPLIES}
+            requiredPermission="view"
+          >
             <Layout>
               <Supplies />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Tickets Management */}
-      <Route 
-        path="/tickets" 
+      <Route
+        path="/tickets"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.TICKETS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.TICKETS}
+            requiredPermission="view"
+          >
             <Layout>
               <Tickets />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Invoices Management */}
-      <Route 
-        path="/invoices" 
+      <Route
+        path="/invoices"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.INVOICES} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.INVOICES}
+            requiredPermission="view"
+          >
             <Layout>
               <Invoices />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Bus Drivers Management */}
-      <Route 
-        path="/bus-drivers" 
+      <Route
+        path="/bus-drivers"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.BUS_DRIVERS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.BUS_DRIVERS}
+            requiredPermission="view"
+          >
             <Layout>
               <BusDrivers />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Hotels Management */}
-      <Route 
-        path="/hotels" 
+      <Route
+        path="/hotels"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.HOTELS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.HOTELS}
+            requiredPermission="view"
+          >
             <Layout>
               <Hotels />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Products Management */}
-      <Route 
-        path="/products" 
+      <Route
+        path="/products"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.PRODUCTS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.PRODUCTS}
+            requiredPermission="view"
+          >
             <Layout>
               <Products />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Loyalty Management */}
-      <Route 
-        path="/loyalty" 
+      <Route
+        path="/loyalty"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.LOYALTY} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.LOYALTY}
+            requiredPermission="view"
+          >
             <Layout>
               <Loyalty />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* HR Management */}
-      <Route 
-        path="/hr" 
+      <Route
+        path="/hr"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.HR} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.HR}
+            requiredPermission="view"
+          >
             <Layout>
               <HR />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Reports */}
-      <Route 
-        path="/reports" 
+      <Route
+        path="/reports"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.REPORTS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.REPORTS}
+            requiredPermission="view"
+          >
             <Layout>
               <Reports />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Settings */}
-      <Route 
-        path="/settings" 
+      <Route
+        path="/settings"
         element={
-          <ProtectedRoute requiredSection={SECTIONS.SETTINGS} requiredPermission="view">
+          <ProtectedRoute
+            requiredSection={SECTIONS.SETTINGS}
+            requiredPermission="view"
+          >
             <Layout>
               <Settings />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* User Management */}
-      <Route 
-        path="/users" 
+      <Route
+        path="/users"
         element={
           <ProtectedRoute>
             <Layout>
               <Users />
             </Layout>
           </ProtectedRoute>
-        } 
+        }
       />
 
       {/* Blocked Page */}
       <Route path="/blocked" element={<Blocked />} />
 
       {/* Catch all route */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
   );
 };
 
@@ -258,4 +313,4 @@ const App = () => {
   return <AppContent />;
 };
 
-export default App; 
+export default App;

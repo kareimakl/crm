@@ -123,3 +123,44 @@
 #root > div.min-h-screen.bg-gray-50 > div.lg\:pr-64 > main > div > div > div.flex.flex-col.md\:flex-row.gap-4.items-center.bg-white.p-4.rounded-2xl.shadow.mb-2.rtl{
   display: none !important;
 }
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 10px !important; /* تقليل حجم الخط لتناسب الصفحة */
+  }
+
+  * {
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .no-print {
+    display: none !important; 
+  }
+
+  html,
+  body {
+    /* width: 250mm; */
+    height: 297mm;
+  }
+
+  .print-page {
+    page-break-after: avoid;
+    page-break-before: avoid;
+    break-inside: avoid;
+  }
+
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+
+  input,
+  textarea {
+    border: none !important;
+    background: none !important;
+  }
+}

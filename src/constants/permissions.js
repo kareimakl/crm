@@ -3,6 +3,7 @@ export const SECTIONS = {
   BRANCHES: "الفروع",
   WAREHOUSES: "المخازن", 
   TRIPS: "الرحلات",
+  PRINT:"الطباعة",
   EMPLOYEES: "الموظفين",
   PILGRIMS: "الحجاج",
   SUPPLIES: "التوريدات",
