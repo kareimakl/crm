@@ -85,3 +85,19 @@ INSERT INTO pilgrims (name, nationality, id_number, phone, package, hotel, hotel
   ('Mohamed Ahmed', 'Saudi', '1234567890', '0501234567', 'Economy Package', 'Mecca Hotel', 2000, 'Bus 1', 500),
   ('Sara Ali', 'Egyptian', '9876543210', '0509876543', 'Luxury Package', 'Medina Hotel', 3000, 'Bus 2', 700)
 ON CONFLICT DO NOTHING; 
+
+
+-- invoices 
+CREATE TABLE invoices (
+  id SERIAL PRIMARY KEY,
+  invoice_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  client VARCHAR(100),
+  total_price NUMERIC DEFAULT 0,
+  notes TEXT
+);
+
+ALTER TABLE tickets
+ADD COLUMN invoice_id INTEGER REFERENCES invoices(id) ON DELETE SET NULL;
+
+ALTER TABLE supplies
+ADD COLUMN invoice_id INTEGER REFERENCES invoices(id) ON DELETE SET NULL;
